@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMOS Results Studio</title><meta name="description" content="Create IMOS test result images and today or tomorrow class announcement posts.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d2e57'/%3E%3Cpath d='M7 24V17h4v7m3 0V8h4v16m3 0V13h4v11' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css"><script src="title-layout.js" defer></script><script src="class-post.js" defer></script><script src="result-template.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a href="./" class="brand" aria-label="IMOS Results Studio home"><span class="brandmark">imōs<span>EDUCATION</span></span><span class="branddivider"></span><span class="brandname">Results Studio</span></a><span class="workspace-label">RESULT IMAGE CREATOR</span><button class="primary download" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Download PNG</span></button></header>
+<main>
+<div class="page-heading"><div><div class="eyebrow">IMOS RESULT IMAGES</div><h1 id="page-title">Create a Top 10 result image.</h1></div><span id="format-badge" class="format-badge">TOP 10 · 16:9</span></div>
+<div class="tabs" role="tablist" aria-label="Test type"><button role="tab" id="tab-unit" aria-selected="true" aria-controls="editor" data-mode="unit" tabindex="0"><span class="tab-icon">01</span>Unit Test<span class="tab-description">By lesson</span></button><button role="tab" id="tab-tute" aria-selected="false" aria-controls="editor" data-mode="tute" tabindex="-1"><span class="tab-icon">02</span>Tute Test<span class="tab-description">By tute</span></button><button role="tab" id="tab-post" aria-selected="false" aria-controls="post-editor" data-mode="post" tabindex="-1"><span class="tab-icon">03</span>අද / හෙට Post<span class="tab-description">Class notice</span></button><button role="tab" id="tab-result-template" aria-selected="false" aria-controls="rt-editor" data-mode="result-template" tabindex="-1"><span class="tab-icon">04</span>Result Template<span class="tab-description">Photo &amp; quote</span></button></div>
+<div class="workspace" id="results-workspace">
+<section class="editor" id="editor" role="tabpanel" aria-labelledby="tab-unit">
+<div class="panel-heading"><div><h2>Test details</h2><p>ඔබේ පරීක්ෂණයේ විස්තර ඇතුළත් කරන්න.</p></div><span class="step">01</span></div>
+<div class="details-fields">
+<label>Grade<select id="grade"><option value="06">Grade 06</option><option value="07">Grade 07</option><option value="08" selected>Grade 08</option><option value="09">Grade 09</option><option value="10">Grade 10</option><option value="11">Grade 11</option></select></label>
+<label><span id="number-label">Unit number</span><input id="test-number" type="text" maxlength="12" value="09" placeholder="09"></label>
+<label class="full" id="unit-field">Unit name<textarea id="unit-name" rows="2" maxlength="140" placeholder="e.g. ස්කන්ධය / Mass">ස්කන්ධය</textarea><span class="hint">Long names wrap into two lines automatically. Press Enter to choose the line break.</span></label>
+<label class="full" id="topics-field" hidden>Units covered<textarea id="topics" rows="3" placeholder="01 | Time&#10;02 | Number line&#10;03 | Estimation and rounding off"></textarea><span class="hint">One unit per line: number | unit name. Up to 3 units.</span></label>
+</div>
+<div class="students-section"><div class="panel-heading"><div><h2>Student results <span id="entry-count" class="count">10</span></h2><p>Preview එකේ වැඩිම ලකුණු අනුව Top 10 සකස් වේ.</p></div><span class="step">02</span></div>
+<div class="bulk-paste">
+<h3>Paste all 10 at once</h3>
+<p id="paste-help">Names, schools සහ marks වෙන වෙනම paste කරන්න. එක ළමයෙකුගේ විස්තර boxes තුනේම එකම පේළියේ තබන්න.</p>
+<div class="paste-columns">
+<label for="paste-names">Names <span id="names-lines" class="paste-count">0 lines</span><textarea id="paste-names" rows="10" wrap="off" spellcheck="false" aria-describedby="paste-help" placeholder="Student 1&#10;Student 2&#10;Student 3&#10;…&#10;Student 10"></textarea></label>
+<label for="paste-schools">Schools <span id="schools-lines" class="paste-count">0 lines</span><textarea id="paste-schools" rows="10" wrap="off" spellcheck="false" aria-describedby="paste-help" placeholder="School 1&#10;School 2&#10;School 3&#10;…&#10;School 10"></textarea></label>
+<label for="paste-marks">Marks <span id="marks-lines" class="paste-count">0 lines</span><textarea id="paste-marks" rows="10" wrap="off" spellcheck="false" aria-describedby="paste-help" placeholder="100&#10;98&#10;95&#10;…&#10;80"></textarea></label>
+</div>
+<div class="paste-actions"><button id="apply-paste" class="primary">Apply pasted results</button><span>Replaces this tab’s student list.</span></div>
+<p id="paste-status" role="status" aria-live="polite"></p>
+</div>
+<div class="sample-bar" id="sample-bar"><span>Sample results loaded</span><button id="clear-samples">Clear & enter yours</button></div>
+<div class="table-scroll"><table><thead><tr><th class="row-number">#</th><th>Student name</th><th>School</th><th class="score-column">Marks</th><th class="delete-column"><span class="sr-only">Remove</span></th></tr></thead><tbody id="students"></tbody></table></div>
+<div class="table-footer"><button class="text-button" id="add-row"><span>＋</span> Add student</button><span id="shown-count">10 in preview</span></div>
+</div>
+<div class="font-options"><label>Sinhala font<select id="result-font"><option value="IsiBasuru">IsiBasuru</option><option value="IsiDavasa">IsiDavasa</option><option value="IsiGanganee">IsiGanganee</option><option value="IsiGemunu" selected>IsiGemunu</option><option value="IsiMalithi">IsiMalithi</option><option value="IsiSamantha">IsiSamantha</option></select></label><p>Applies to Sinhala text in every poster. Type or paste normal Sinhala text.</p></div>
+</section>
+<section class="preview-column" aria-label="Result image preview">
+<div class="preview-top"><div><span class="live-dot"></span><h2>Live preview</h2></div><span id="template-name">UNIT TEST TEMPLATE</span></div>
+<div class="preview-stage"><div class="canvas-wrap"><canvas id="poster" width="1920" height="1080" role="img" aria-label="Top 10 result poster preview"></canvas><div class="loading" id="loading">Preparing your template…</div></div></div>
+<div class="preview-bottom"><span id="dimensions">1920 × 1080 px</span><span>PNG · Ready to share</span></div>
+<div class="export-panel"><div class="export-heading"><span class="export-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></span><div><h2>Download your result image</h2><p>Choose a resolution for your PNG image.</p></div></div><div class="export-actions"><label>Image quality<select id="quality"><option value="1">Full HD · 1920 × 1080</option><option value="2">2× resolution · 3840 × 2160</option></select></label><button class="primary download" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Download PNG</button></div></div>
+<div class="preview-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m12 3 8 4v6c0 4-8 8-8 8s-8-4-8-8V7z"/><path d="m8 12 3 3 5-6"/></svg><p>Edits stay in this tab. Download your images before closing.<br>Equal marks keep the order you entered.</p></div>
+<div id="status" role="status" aria-live="polite"></div>
+</section>
+</div>
+<div class="workspace post-workspace" id="post-workspace" hidden>
+<section class="editor" id="post-editor" role="tabpanel" aria-labelledby="tab-post">
+<div class="panel-heading"><div><h2>අද / හෙට Class Post</h2><p>Class විස්තර වෙනස් කරලා post එක download කරන්න.</p></div></div>
+<div class="details-fields">
+<label>Grade<select id="post-grade"><option value="06">Grade 06</option><option value="07">Grade 07</option><option value="08">Grade 08</option><option value="09">Grade 09</option><option value="10">Grade 10</option><option value="11">Grade 11</option></select></label>
+<label>Medium<select id="post-medium"><option value="si">Sinhala medium</option><option value="en">English medium</option></select></label><label>Sinhala font<select id="post-font"><option value="IsiBasuru">IsiBasuru</option><option value="IsiDavasa">IsiDavasa</option><option value="IsiGanganee">IsiGanganee</option><option value="IsiGemunu" selected>IsiGemunu</option><option value="IsiMalithi">IsiMalithi</option><option value="IsiSamantha">IsiSamantha</option></select></label><label>When<select id="post-day"><option value="today">අද / Today</option><option value="tomorrow">හෙට / Tomorrow</option></select></label>
+<label class="full">Unit name<textarea id="post-unit" rows="2" maxlength="140">දත්ත රැස්කිරීම හා නිරූපණය</textarea><span class="hint">Sinhala / English · Long names fit across two lines.</span></label>
+<label>Class time<input type="time" id="post-time" value="15:30" required></label>
+<label>Post quality<select id="post-quality"><option value="1">1080 × 1080</option><option value="2">2160 × 2160</option></select></label>
+</div>
+<details class="post-layout" open><summary>Adjust text layout</summary><p class="hint">Choose a text block, then adjust its position and size. Changes appear in the preview and downloaded PNG.</p><div class="layout-selects"><label>Text block<select id="layout-target"><option value="unit">Unit name &amp; white box</option><option value="grade">Grade</option><option value="day">Today / Tomorrow</option><option value="time">Class time</option></select></label><label>Alignment<select id="layout-align"><option value="left">Left</option><option value="center" selected>Center</option><option value="right">Right</option></select></label></div><div class="layout-control"><label for="layout-x">Left / right</label><input id="layout-x" type="range" min="0" max="960" step="1"><input id="layout-x-number" type="number" min="0" max="960" step="1" aria-label="Left / right value"></div><div class="layout-control"><label for="layout-y">Up / down</label><input id="layout-y" type="range" min="0" max="1050" step="1"><input id="layout-y-number" type="number" min="0" max="1050" step="1" aria-label="Up / down value"></div><div class="layout-control"><label for="layout-width">Text area width</label><input id="layout-width" type="range" min="120" max="1000" step="1"><input id="layout-width-number" type="number" min="120" max="1000" step="1" aria-label="Text area width value"></div><div class="layout-control"><label for="layout-height">Text area height</label><input id="layout-height" type="range" min="30" max="240" step="1"><input id="layout-height-number" type="number" min="30" max="240" step="1" aria-label="Text area height value"></div><div class="layout-control"><label for="layout-size">Font size</label><input id="layout-size" type="range" min="14" max="140" step="1"><input id="layout-size-number" type="number" min="14" max="140" step="1" aria-label="Font size value"></div><p class="hint">Long text fits inside its area. Increase the width or height to make room for a larger font.</p><div class="layout-actions"><button class="text-button" id="layout-reset">Reset this block</button><button class="text-button" id="layout-reset-all">Reset all positions</button></div></details>
+<div class="post-image-controls"><h2>Post image</h2><div class="post-image-options"><label>Upload your image<input id="post-image-upload" type="file" accept="image/png,image/jpeg,image/webp"></label><span class="hint">PNG, JPEG or WebP · Up to 15 MB</span><button class="text-button" id="post-reset-image">Use template image</button></div><p id="post-image-caption" class="hint">Template image</p></div>
+</section>
+<section class="preview-column" aria-label="Class announcement preview"><div class="preview-top"><div><span class="live-dot"></span><h2>Live preview</h2></div><span>CLASS POST · 1:1</span></div><div class="preview-stage post-stage"><div class="canvas-wrap post-canvas-wrap"><canvas id="post-canvas" width="1080" height="1080" role="img" aria-label="Class announcement poster"></canvas><div class="loading" id="post-loading">Preparing your template…</div></div></div><div class="preview-bottom"><span id="post-dimensions">1080 × 1080 px</span><span>PNG · Ready to share</span></div><div class="post-download"><p>Logo and teacher branding follow your template.</p><button class="primary" id="download-post" disabled>Download post PNG</button></div><p id="post-status" role="status" aria-live="polite"></p></section>
+</div>
+<div class="workspace result-template-workspace" id="rt-workspace" hidden>
+<section class="editor" id="rt-editor" role="tabpanel" aria-labelledby="tab-result-template">
+<div class="panel-heading"><div><h2>Result Template</h2><p>Change the photo, quote and result label.</p></div></div>
+<div class="details-fields">
+<label class="full">Main text · White<textarea id="rt-main" rows="3" maxlength="250">සර්ගෙ මේ
+කැපවීම නිසා
+අද මගේ දුවට</textarea></label>
+<label class="full">Highlighted text · Yellow<textarea id="rt-highlight" rows="2" maxlength="180">A සාමාර්ථයක්
+තියනවා</textarea><span class="hint">Press Enter to choose line breaks. Longer text fits automatically.</span></label>
+<label class="full">White box · Result label<select id="rt-label-preset"><option>2025(2026) OL Results</option><option>2026 OL Results</option><option>2027 OL Results</option><option>Unit Test Results</option><option>Tute Test Results</option><option>Monthly Test Results</option><option>Term Test Results</option><option value="custom">Custom label…</option></select></label>
+<label class="full">Edit selected label<input id="rt-label" type="text" maxlength="90" value="2025(2026) OL Results"></label>
+<label>Sinhala font<select id="rt-font"><option value="IsiBasuru">IsiBasuru</option><option value="IsiDavasa">IsiDavasa</option><option value="IsiGanganee">IsiGanganee</option><option value="IsiGemunu">IsiGemunu</option><option value="IsiMalithi">IsiMalithi</option><option value="IsiSamantha">IsiSamantha</option></select></label>
+<label>Text alignment<select id="rt-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>
+<label>Text size<input id="rt-size" type="range" min="55" max="120" value="100"><span class="hint" id="rt-size-value">100%</span></label>
+<label>PNG quality<select id="rt-quality"><option value="1">1920 × 1080</option><option value="2">3840 × 2160</option></select></label>
+</div>
+<div class="post-image-controls"><h2>Photo</h2><div class="post-image-options"><label>Upload a photo<input id="rt-upload" type="file" accept="image/png,image/jpeg,image/webp"></label><span class="hint">PNG, JPEG or WebP · Up to 15 MB</span></div>
+<div id="rt-photo-controls" hidden><label>Photo zoom<input id="rt-zoom" type="range" min="1" max="3" step="0.01" value="1"></label><label>Left / right<input id="rt-photo-x" type="range" min="-100" max="100" value="0"></label><label>Up / down<input id="rt-photo-y" type="range" min="-100" max="100" value="0"></label><button class="text-button" id="rt-reset-crop">Reset photo position</button></div>
+<button class="text-button" id="rt-reset-photo">Use template photo</button><p id="rt-photo-caption" class="hint">Template photo</p></div></section>
+<section class="preview-column" aria-label="Result template preview"><div class="preview-top"><div><span class="live-dot"></span><h2>Live preview</h2></div><span>RESULT TEMPLATE · 16:9</span></div><div class="preview-stage"><div class="canvas-wrap"><canvas id="rt-canvas" width="1920" height="1080" role="img" aria-label="Result template poster"></canvas><div class="loading" id="rt-loading">Preparing your template…</div></div></div><div class="preview-bottom"><span id="rt-dimensions">1920 × 1080 px</span><span>PNG · Ready to share</span></div><div class="export-panel"><h2>Download result template</h2><p class="hint">Your selected photo and text are included in the PNG.</p><button class="primary" id="rt-download" disabled>Download PNG</button></div><p id="rt-status" role="status" aria-live="polite"></p></section>
+</div>
+<footer>IMOS EDUCATION <span>Unit Test · Tute Test · Class Post · Result Template</span></footer>
+</main>
+</body></html>
